@@ -204,5 +204,5 @@ fabric.properties
 # *.ipr
 .idea
 .env*
-pdfs/
+pdfs/*
 !pdfs/.gitkeep
