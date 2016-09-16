@@ -1,8 +1,16 @@
-from flask import Flask
-from flask.ext.pymongo import PyMongo
+from flask import Flask, request
+from flask_pymongo import PyMongo
+from models.presentation import PresentationCollection
+
 
 app = Flask('hackathon')
 mongo = PyMongo(app)
 
-UPLOAD_FOLDER = '/pdfs'
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    presentation = PresentationCollection(mongo, app)
+    presentation.add_presentation(request.files[0])
+    return 'file uploaded successfully'
+
 
