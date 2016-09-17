@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, url_for
 from flask_cors import CORS, cross_origin
 from flask_socketio import SocketIO
 from flask_pymongo import PyMongo
@@ -7,7 +7,7 @@ from models.presentation import PresentationCollection
 
 from services.magic import add_chunk, main
 
-UPLOAD_FOLDER = '/pdfs'
+UPLOAD_FOLDER = '/static/pdfs'
 
 app = Flask(__name__)
 CORS(app)
@@ -33,14 +33,10 @@ def change_page():
     return updated_presentation
 
 
-@socketio.on('audio')
-def handlechunk(data):
-    add_chunk(data)
-
-
-@socketio.on('init')
-def handleinit(message):
-    main()
+@app.route('/getDocumentPath', methods=['GET'])
+def get_file_url():
+    object_id = request.args.get('presentation_id')
+    return url_for('static', filename='pdfs/' + object_id)
 
 if __name__ == '__main__':
     socketio.run(app)
