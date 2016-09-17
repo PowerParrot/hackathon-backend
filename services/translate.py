@@ -39,6 +39,6 @@ class TranslateEngine:
         translation_dict = {}
 
         for lang in LANGUAGES:
-            translation_dict['lang'] = self.translate(sentence_list,lang)
+            translation_dict[lang] = self.translate(sentence_list, lang)
 
         return translation_dict

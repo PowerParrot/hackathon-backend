@@ -55,9 +55,9 @@ def page_changed(message):
 
 @socketio.on('note')
 def note_receive(message):
-    print(unicode(message))
     presentation_id = message['presentation_id']
     message['translations'] = translator.translate_all([message['speech']])
+    print(unicode(message))
     socketio.emit(str(presentation_id), message)
     notes.add_note(message)
 
