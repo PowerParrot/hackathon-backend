@@ -14,7 +14,7 @@ import json
 UPLOAD_FOLDER = '/static/pdfs'
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, allow_headers=['Accept-Ranges'])
+CORS(app, supports_credentials=True, allow_headers=['Accept-Ranges', 'content-type'])
 
 # socket.io
 socketio = SocketIO(app)
@@ -34,13 +34,13 @@ def upload_file():
     return created_presentation
 
 
-@app.route('/export', methods=['POST'])
-def export_file():
-    presentation_id = request.args.get('presentation_id')
+@app.route('/export/<presentation_id>', methods=['GET'])
+def export_file(presentation_id):
     language = request.args.get('language')
     exporter = PdfExporter(presentation_id, mongo, app, language)
     exporter.generate()
-    # return translator.export_pdf(presentation_id, language)
+    json_object = {'url': url_for('static', filename='pdfs/' + exporter.report_file_name())}
+    return json.dumps(json_object)
 
 
 @app.route('/changePage', methods=['PUT'])

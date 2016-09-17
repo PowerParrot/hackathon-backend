@@ -16,6 +16,12 @@ class PdfExporter:
         self.language = language
         self.presentation = os.path.join(self.app.root_path + self.app.config['UPLOAD_FOLDER'], presentation_id)
 
+    def report_file_name(self):
+        return (self.presentation_id + '_report.pdf')
+
+    def report_path(self):
+        return (self.presentation + '_report.pdf')
+
     def generate(self):
         final_file = PdfFileWriter()
 
@@ -26,7 +32,7 @@ class PdfExporter:
             final_file.addPage(presi.getPage(i))
             final_file.addPage(self.create_notes_page(i+1).getPage(0))
 
-        outputStream = file(self.presentation+'_report', "wb")
+        outputStream = file(self.report_path(), "wb")
         final_file.write(outputStream)
         outputStream.close()
 
