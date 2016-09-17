@@ -5,6 +5,7 @@ from flask_pymongo import PyMongo
 import json
 
 from models.presentation import PresentationCollection
+import json
 
 
 UPLOAD_FOLDER = '/static/pdfs'
@@ -38,6 +39,21 @@ def get_file_url():
     object_id = request.args.get('presentation_id')
     json_object = {'url': url_for('static', filename='pdfs/' + object_id)}
     return json.dumps(json_object)
+
+@socketio.on('pagechange')
+def page_changed(message):
+    print 'pagechage'
+    print message
+    # currentPage:
+    # postNote:
+    # socketio.emit('message', {'data': message})
+
+@socketio.on('note')
+def note_receive(message):
+    print(unicode(message))
+    presentation_id = message['presentation_id']
+    socketio.emit(str(presentation_id), message)
+    mongo.db.notes.insert_one(message)
 
 if __name__ == '__main__':
     socketio.run(app)
