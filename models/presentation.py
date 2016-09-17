@@ -13,10 +13,16 @@ class PresentationCollection:
         result = self.mongo.db.presentations.insert_one({'originalFilename': secure_filename(pdf_file.filename)})
 
         # get id of empty record as filename
-        filename = result.inserted_id
+        filename = str(result.inserted_id)
+
+        absolute_path = os.path.join(self.app.root_path + self.app.config['UPLOAD_FOLDER'], filename)
 
         # save file with id as filename
-        pdf_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], filename))
+        pdf_file.save(absolute_path)
+
+        print(result.inserted_id)
 
         # update record with path of file
-        self.mongo.db.presentation.update_one({'_id': filename}, {'$set': {'pdfPath': pdf_file.name}})
+        self.mongo.db.presentations.update_one({'_id': result.inserted_id}, {'$set': {'pdfPath': absolute_path}})
+
+        return result.inserted_id
