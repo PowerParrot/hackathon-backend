@@ -10,7 +10,7 @@ from services.magic import add_chunk, main
 UPLOAD_FOLDER = '/static/pdfs'
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 # socket.io
 socketio = SocketIO(app)
