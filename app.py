@@ -5,7 +5,7 @@ from flask_pymongo import PyMongo
 
 from models.presentation import PresentationCollection
 
-from services.speech_to_text import SpeechToText
+from services.magic import add_chunk, main
 
 UPLOAD_FOLDER = '/pdfs'
 
@@ -20,7 +20,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 mongo = PyMongo(app)
 presentation = PresentationCollection(mongo, app)
 
-global google_service
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -37,14 +36,12 @@ def change_page():
 @socketio.on('audio')
 def handlechunk(data):
     socketio.emit('message', {'data': 'fudejasse'})
-    global google_service
-    google_service.handle_chunk(data)
+    add_chunk(data)
 
 
 @socketio.on('init')
 def handleinit(message):
-    global google_service
-    google_service = SpeechToText()
+    main()
 
 if __name__ == '__main__':
     socketio.run(app)
