@@ -30,6 +30,11 @@ def upload_file():
     created_presentation = presentation.add_presentation(request.files['file'])
     return created_presentation
 
+@app.route('/export', methods=['POST'])
+def export_file():
+    presentation_id = request.args.get('presentation_id')
+    language = request.args.get('language')
+    # return translator.export_pdf(presentation_id, language)
 
 @app.route('/changePage', methods=['PUT'])
 def change_page():
