@@ -2,7 +2,6 @@ from gcloud.credentials import get_credentials
 from google.cloud.speech.v1beta1 import cloud_speech_pb2 as cloud_speech
 from google.rpc import code_pb2
 from grpc.beta import implementations
-import pyaudio
 
 # Audio recording parameters
 RATE = 16000
@@ -13,7 +12,7 @@ CHUNK = int(RATE / 10)  # 100ms
 DEADLINE_SECS = 8 * 60 * 60
 SPEECH_SCOPE = 'https://www.googleapis.com/auth/cloud-platform'
 
-class Google:
+class SpeechToText:
     """Provides audio streaming to the Google Cloud Speech API via GRPC.
     Based on the Google streaming example from:
     https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/speech/grpc/transcribe_streaming.py"""

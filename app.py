@@ -5,7 +5,7 @@ from flask_pymongo import PyMongo
 
 from models.presentation import PresentationCollection
 
-from services.google import Google
+from services.speech_to_text import SpeechToText
 
 UPLOAD_FOLDER = '/pdfs'
 
@@ -42,7 +42,7 @@ def handlechunk(data):
 
 @socketio.on('init')
 def handleinit(message):
-    google_service = Google()
+    google_service = SpeechToText()
 
 if __name__ == '__main__':
     socketio.run(app)
