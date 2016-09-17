@@ -5,6 +5,7 @@ from flask_pymongo import PyMongo
 import json
 
 from models.presentation import PresentationCollection
+from models.note import NotesCollection
 import json
 
 
@@ -20,7 +21,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 mongo = PyMongo(app)
 presentation = PresentationCollection(mongo, app)
-
+notes = NotesCollection(mongo)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -53,7 +54,7 @@ def note_receive(message):
     print(unicode(message))
     presentation_id = message['presentation_id']
     socketio.emit(str(presentation_id), message)
-    mongo.db.notes.insert_one(message)
+    notes.add_note(message)
 
 if __name__ == '__main__':
     socketio.run(app)
