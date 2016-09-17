@@ -34,8 +34,7 @@ class PdfExporter:
         packet = StringIO.StringIO()
 
         canvas = Canvas(packet, pagesize=landscape(A4))
-        canvas.setFont('Helvetica')
-        canvas.setFontSize(12)
+        canvas.setFont('Helvetica',12)
         notes = json.loads(self.notes_collection.get_notes_for_presentation(self.presentation_id))
         line = 550
         for note in notes:
