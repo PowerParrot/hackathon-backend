@@ -46,11 +46,9 @@ def get_file_url():
 
 @socketio.on('pagechange')
 def page_changed(message):
-    print 'pagechage'
-    print message
-    # currentPage:
-    # postNote:
-    # socketio.emit('message', {'data': message})
+    presentation_id = message['presentation_id']
+    print(unicode(message))
+    socketio.emit(str(presentation_id), message)
 
 
 @socketio.on('note')
