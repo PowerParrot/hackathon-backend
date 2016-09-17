@@ -1,6 +1,11 @@
 
 # Created by https://www.gitignore.io/api/python,jetbrains,pycharm
 
+### Credentials
+google-service-key.json
+hack.env
+hack
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
