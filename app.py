@@ -33,6 +33,11 @@ def upload_file():
     created_presentation = presentation.add_presentation(request.files['file'])
     return created_presentation
 
+@app.route('/export', methods=['POST'])
+def export_file():
+    presentation_id = request.args.get('presentation_id')
+    language = request.args.get('language')
+    # return translator.export_pdf(presentation_id, language)
 
 @app.route('/changePage', methods=['PUT'])
 def change_page():
@@ -56,11 +61,9 @@ def generate():
 
 @socketio.on('pagechange')
 def page_changed(message):
-    print 'pagechage'
-    print message
-    # currentPage:
-    # postNote:
-    # socketio.emit('message', {'data': message})
+    presentation_id = message['presentation_id']
+    print(unicode(message))
+    socketio.emit(str(presentation_id), message)
 
 
 @socketio.on('note')
