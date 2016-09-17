@@ -36,5 +36,9 @@ def handlechunk(data):
     socketio.emit('message', {'data': 'fudejasse'})
 
 
+@socketio.on('init')
+def handleinit(message):
+    print(message)
+
 if __name__ == '__main__':
     socketio.run(app)
