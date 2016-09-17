@@ -33,7 +33,7 @@ def change_page():
 
 @socketio.on('audio')
 def handlechunk(data):
-    print(data)
+    socketio.emit('message', {'data': 'fudejasse'})
 
 
 if __name__ == '__main__':
