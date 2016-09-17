@@ -23,6 +23,8 @@ from __future__ import print_function
 from googleapiclient.discovery import build
 import os
 
+LANGUAGES = ['de', 'fr', 'es', 'it']
+
 
 class TranslateEngine:
 
@@ -33,4 +35,10 @@ class TranslateEngine:
     def translate(self, sentence_list, language):
         return self.service.translations().list(source='en', target=language, q=sentence_list).execute()
 
+    def translate_all(self, sentence_list):
+        translation_dict = {}
 
+        for lang in LANGUAGES:
+            translation_dict['lang'] = self.translate(sentence_list,lang)
+
+        return translation_dict

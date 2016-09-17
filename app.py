@@ -2,6 +2,7 @@ from flask import Flask, request, url_for
 from flask_cors import CORS
 from flask_socketio import SocketIO
 from flask_pymongo import PyMongo
+from services.translate import TranslateEngine
 import json
 
 from models.presentation import PresentationCollection
@@ -22,6 +23,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 mongo = PyMongo(app)
 presentation = PresentationCollection(mongo, app)
 notes = NotesCollection(mongo)
+translator = TranslateEngine()
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -41,6 +43,7 @@ def get_file_url():
     json_object = {'url': url_for('static', filename='pdfs/' + object_id)}
     return json.dumps(json_object)
 
+
 @socketio.on('pagechange')
 def page_changed(message):
     print 'pagechage'
@@ -49,10 +52,12 @@ def page_changed(message):
     # postNote:
     # socketio.emit('message', {'data': message})
 
+
 @socketio.on('note')
 def note_receive(message):
     print(unicode(message))
     presentation_id = message['presentation_id']
+    message['translations'] = translator.translate_all([message['speech']])
     socketio.emit(str(presentation_id), message)
     notes.add_note(message)
 
