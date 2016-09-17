@@ -20,3 +20,9 @@ presentation = PresentationCollection(mongo, app)
 def upload_file():
     created_presentation = presentation.add_presentation(request.files['file'])
     return created_presentation
+
+
+@app.route('/changePage', methods=['PUT'])
+def change_page():
+    updated_presentation = presentation.set_current_page(request.args.get('presentation_id'), request.args.get('current_page'))
+    return updated_presentation
