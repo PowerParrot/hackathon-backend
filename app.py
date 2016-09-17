@@ -10,7 +10,7 @@ from models.presentation import PresentationCollection
 UPLOAD_FOLDER = '/static/pdfs'
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, allow_headers=['Accept-Ranges'])
 
 # socket.io
 socketio = SocketIO(app)
