@@ -20,7 +20,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 mongo = PyMongo(app)
 presentation = PresentationCollection(mongo, app)
 
-google_service = None
+global google_service
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -37,11 +37,13 @@ def change_page():
 @socketio.on('audio')
 def handlechunk(data):
     socketio.emit('message', {'data': 'fudejasse'})
+    global google_service
     google_service.handle_chunk(data)
 
 
 @socketio.on('init')
 def handleinit(message):
+    global google_service
     google_service = SpeechToText()
 
 if __name__ == '__main__':
