@@ -35,7 +35,6 @@ def change_page():
 
 @socketio.on('audio')
 def handlechunk(data):
-    socketio.emit('message', {'data': 'fudejasse'})
     add_chunk(data)
 
 

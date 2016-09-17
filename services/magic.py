@@ -19,6 +19,7 @@ from __future__ import division
 import contextlib
 import re
 import threading
+import time
 from queue import Queue
 
 from gcloud.credentials import get_credentials
@@ -100,6 +101,7 @@ def request_stream(channels=CHANNELS, rate=RATE, chunk=CHUNK):
     )
     streaming_config = cloud_speech.StreamingRecognitionConfig(
         config=recognition_config,
+        interim_results = True
     )
 
     yield cloud_speech.StreamingRecognizeRequest(
@@ -118,12 +120,10 @@ def request_stream(channels=CHANNELS, rate=RATE, chunk=CHUNK):
 def listen_print_loop(recognize_stream):
     print 'print loop'
     for resp in recognize_stream:
+        print(resp)
         if resp.error.code != code_pb2.OK:
             raise RuntimeError('Server error: ' + resp.error.message)
 
-        # Display the transcriptions & their alternatives
-        for result in resp.results:
-            print(result.alternatives)
 
         # Exit recognition if any of the transcribed phrases could be
         # one of our keywords.
