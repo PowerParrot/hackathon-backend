@@ -14,7 +14,7 @@ import json
 UPLOAD_FOLDER = '/static/pdfs'
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, allow_headers=['Accept-Ranges'])
+CORS(app, supports_credentials=True, allow_headers=['Accept-Ranges', 'content-type'])
 
 # socket.io
 socketio = SocketIO(app)

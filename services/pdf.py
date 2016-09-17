@@ -40,15 +40,23 @@ class PdfExporter:
         packet = StringIO.StringIO()
 
         canvas = Canvas(packet, pagesize=landscape(A4))
+        canvas.setFont('Helvetica')
+        canvas.setFontSize(12)
         notes = json.loads(self.notes_collection.get_notes_for_presentation(self.presentation_id))
         line = 550
         for note in notes:
             if int(note['current_page']) == page_number:
+                comment = None
+
                 if self.language == 'en':
-                    canvas.drawString(10, line, note['speech'])
+                    comment = note['speech']
                 else:
-                    canvas.drawString(10, line, note['translations'][self.language]['translations'][0]['translatedText'])
-                line -= 15
+                    comment = note['translations'][self.language]['translations'][0]['translatedText']
+
+
+                canvas.drawString(10, line, comment)
+
+                line -= 20
         canvas.showPage()
         canvas.save()
         packet.seek(0)
