@@ -108,8 +108,6 @@ def request_stream(channels=CHANNELS, rate=RATE, chunk=CHUNK):
     while True:
         data = q.get()
         q.task_done()
-        print('in looop')
-        print(data)
         if not data:
             raise StopIteration()
 
@@ -118,6 +116,7 @@ def request_stream(channels=CHANNELS, rate=RATE, chunk=CHUNK):
 
 
 def listen_print_loop(recognize_stream):
+    print 'print loop'
     for resp in recognize_stream:
         if resp.error.code != code_pb2.OK:
             raise RuntimeError('Server error: ' + resp.error.message)
