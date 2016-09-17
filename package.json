@@ -1,0 +1,20 @@
+{
+  "name": "node-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "google-auto-auth": "^0.2.4",
+    "google-proto-files": "^0.7.0",
+    "googleapis": "^13.0.0",
+    "grpc": "^1.0.0",
+    "node-record-lpcm16": "^0.1.4",
+    "socket.io": "^1.4.8"
+  }
+}
