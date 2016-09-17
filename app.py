@@ -5,6 +5,8 @@ from flask_pymongo import PyMongo
 
 from models.presentation import PresentationCollection
 
+from services.google import Google
+
 UPLOAD_FOLDER = '/pdfs'
 
 app = Flask(__name__)
@@ -18,6 +20,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 mongo = PyMongo(app)
 presentation = PresentationCollection(mongo, app)
 
+google_service = None
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -34,11 +37,12 @@ def change_page():
 @socketio.on('audio')
 def handlechunk(data):
     socketio.emit('message', {'data': 'fudejasse'})
+    google_service.handle_chunk(data)
 
 
 @socketio.on('init')
 def handleinit(message):
-    print(message)
+    google_service = Google()
 
 if __name__ == '__main__':
     socketio.run(app)
