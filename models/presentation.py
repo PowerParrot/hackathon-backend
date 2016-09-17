@@ -24,3 +24,6 @@ class PresentationCollection:
     def set_current_page(self, presentation_id, current_page):
         self.mongo.db.presentations.update_one({'_id': presentation_id}, {'$set': {'currentPage': current_page}})
         return dumps(self.mongo.db.presentations.find_one({'_id':presentation_id}))
+
+    def change_page(self, file_id, page_number):
+        self.mongo.db.presentations.update_one({'_id': file_id}, {'$set': {'currentPage': page_number}})

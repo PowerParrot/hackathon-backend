@@ -9,12 +9,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 mongo = PyMongo(app)
 
+presentation = PresentationCollection(mongo, app)
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    print(request.files['file'])
-    presentation = PresentationCollection(mongo, app)
-    presentation.add_presentation(request.files['file'])
-    return 'file uploaded successfully'
-
+    created_presentation = presentation.add_presentation(request.files['file'])
+    return created_presentation
 
