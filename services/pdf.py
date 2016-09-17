@@ -9,10 +9,11 @@ from models.note import NotesCollection
 
 class PdfExporter:
 
-    def __init__(self, presentation_id, mongo, app):
+    def __init__(self, presentation_id, mongo, app, language):
         self.presentation_id = presentation_id
         self.notes_collection = NotesCollection(mongo)
         self.app = app
+        self.language = language
         self.presentation = os.path.join(self.app.root_path + self.app.config['UPLOAD_FOLDER'], presentation_id)
 
     def generate(self):
@@ -37,7 +38,10 @@ class PdfExporter:
         line = 550
         for note in notes:
             if int(note['current_page']) == page_number:
-                canvas.drawString(10, line, note['speech'])
+                if self.language == 'en':
+                    canvas.drawString(10, line, note['speech'])
+                else:
+                    canvas.drawString(10, line, note['translations'][self.language]['translations'][0]['translatedText'])
                 line -= 15
         canvas.showPage()
         canvas.save()

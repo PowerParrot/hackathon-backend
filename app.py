@@ -33,11 +33,15 @@ def upload_file():
     created_presentation = presentation.add_presentation(request.files['file'])
     return created_presentation
 
+
 @app.route('/export', methods=['POST'])
 def export_file():
     presentation_id = request.args.get('presentation_id')
     language = request.args.get('language')
+    exporter = PdfExporter(presentation_id, mongo, app, language)
+    exporter.generate()
     # return translator.export_pdf(presentation_id, language)
+
 
 @app.route('/changePage', methods=['PUT'])
 def change_page():
@@ -50,13 +54,6 @@ def get_file_url():
     object_id = request.args.get('presentation_id')
     json_object = {'url': url_for('static', filename='pdfs/' + object_id)}
     return json.dumps(json_object)
-
-
-@app.route('/generate', methods=['GET'])
-def generate():
-    exporter = PdfExporter('57dd96541769d0098d276595', mongo, app)
-    exporter.generate()
-    return 'ok'
 
 
 @socketio.on('pagechange')
