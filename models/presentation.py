@@ -1,6 +1,8 @@
 import os
 from bson.json_util import dumps
 from werkzeug.utils import secure_filename
+from bson.objectid import ObjectId
+
 
 
 class PresentationCollection:
@@ -22,5 +24,5 @@ class PresentationCollection:
         return dumps(self.mongo.db.presentations.find_one({'_id': result.inserted_id}))
 
     def set_current_page(self, presentation_id, current_page):
-        self.mongo.db.presentations.update_one({'_id': presentation_id}, {'$set': {'currentPage': current_page}})
-        return dumps(self.mongo.db.presentations.find_one({'_id':presentation_id}))
+        self.mongo.db.presentations.update_one({'_id': ObjectId(presentation_id)}, {'$set': {'currentPage': current_page}})
+        return dumps(self.mongo.db.presentations.find_one({'_id': ObjectId(presentation_id)}))
